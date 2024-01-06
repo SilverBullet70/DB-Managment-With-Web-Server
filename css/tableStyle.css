@@ -3,6 +3,7 @@ body {
     margin: 0;
     align-items: center;
     padding: 0;
+    border: #55608f;
 }
 
 body {
@@ -11,12 +12,18 @@ body {
     font-weight: 100;
 }
 
+.navbar {
+
+    background-color: #04AA6D;
+    min-width: 1000px;
+}
+
 .navbar a {
     float: left;
     padding: 12px;
-    color: white;
     text-decoration: none;
     font-size: 17px;
+    background-color: #04AA6D;
 }
 
 .navbar a:hover {
@@ -27,12 +34,11 @@ body {
     background-color: #04AA6D;
 }
 
-.container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
+/* .container {
+     position: sticky; 
     transform: translate(-50%, -50%);
-}
+    } 
+*/
 
 table {
     width: 800px;
@@ -44,7 +50,6 @@ table {
 
 h1 {
     text-align: center;
-    margin-top: 20px;
 }
 
 th,
@@ -105,7 +110,7 @@ h1 {
     color: #ff4411;
     font-size: 48px;
     font-family: 'Signika', sans-serif;
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
 }
 
 

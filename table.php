@@ -15,6 +15,8 @@ if (!isset($_SESSION["user"])) {
     <title>search car table</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="css/tableStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 
 
@@ -25,7 +27,7 @@ if (!isset($_SESSION["user"])) {
         <a href="#"><i class="fa fa-fw fa-envelope"></i> Contact</a>
         <a href="#"><i class="fa fa-fw fa-user"></i> Login</a>
     </div>
-    <h1></h1>
+    <!-- <h1></h1> -->
 
     <!-- <label for="id">car name</label>
     <input type="text" id="id">
@@ -34,7 +36,7 @@ if (!isset($_SESSION["user"])) {
 
 
     <!-- <embed type="text/html" src="registration.html" width="500" height="200"> -->
-    <div id="leftContainer">
+    <!-- <div id="leftContainer">
         <div id="res"></div>
     </div>
 
@@ -68,7 +70,7 @@ if (!isset($_SESSION["user"])) {
             return st.toLowerCase().split(" ").reduce((s, c) =>
                 s + "" + (c.charAt(0).toUpperCase() + c.slice(1) + " "), '');
         }
-    </script>
+    </script> -->
 
 </body>
 

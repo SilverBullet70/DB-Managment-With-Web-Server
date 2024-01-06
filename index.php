@@ -16,150 +16,64 @@ if (!isset($_SESSION["user"])) {
 </head>
 
 <body>
-    <h1>Database tables whith PHP</h1>
-
-    
-    <br><br>
-    <div id="res"></div>
     <script>
         $(document).ready(function() {
-            $.post("php/homeService.php", {
-                    id: null,
-                    value: null
-                },
+            $.ajax({
+                url: "php/homeService.php",
+                type: "POST",
+                success: function(data) {
+                    var cols = JSON.parse(data);
+                    while (cols.length > 0) {
+                        var col = titleCase(cols.pop());
+                        if (col == "Login ") {
+                            continue;
+                        }
+                        $("#res").append(buildCard(col, "table.php?table=" + col));
+                    }
+                }
+            });
 
-                function(data, Status) {
-                    $("#res").html(data);
-                });
+
+
+            function titleCase(st) {
+                return st.toLowerCase().split(" ").reduce((s, c) =>
+                    s + "" + (c.charAt(0).toUpperCase() + c.slice(1) + " "), '');
+            }
+
+            function buildCard(title, link) {
+                var card = "<div class='ag-courses_item'><a href='" + link + "' class='ag-courses-item_link'><div class='ag-courses-item_bg'></div><div class='ag-courses-item_title'>" + title + "</div></a></div>";
+                return card;
+            }
         });
     </script>
 
-<div class="ag-format-container">
-  <div class="ag-courses_box">
-    <div class="ag-courses_item">
-      <a href="#" class="ag-courses-item_link">
-        <div class="ag-courses-item_bg"></div>
+    <div class="title">
+        <h1>Database tables whith PHP</h1>
 
-        <div class="ag-courses-item_title">
-          UI/Web&amp;Graph design for teenagers 11-17&#160;years old
-        </div>
-
-        <div class="ag-courses-item_date-box">
-          Start:
-          <span class="ag-courses-item_date">
-            04.11.2022
-          </span>
-        </div>
-      </a>
     </div>
 
-    <div class="ag-courses_item">
-      <a href="#" class="ag-courses-item_link">
-        <div class="ag-courses-item_bg"></div>
+    <div class="ag-format-container">
+        <div id="res" class="ag-courses_box">
 
-        <div class="ag-courses-item_title">
-          UX/UI Web-Design&#160;+ Mobile Design
-        </div>
 
-        <div class="ag-courses-item_date-box">
-          Start:
-          <span class="ag-courses-item_date">
-            04.11.2022
-          </span>
+
+
+            <!-- 
+            <div class="ag-courses_item">
+                <a href="#" class="ag-courses-item_link">
+                    <div class="ag-courses-item_bg"></div>
+
+                    <div class="ag-courses-item_title">
+                        Front-end development&#160;+ jQuery&#160;+ CMS
+                    </div>
+                </a>
+            </div> -->
+
+
+
+
         </div>
-      </a>
     </div>
-
-    <div class="ag-courses_item">
-      <a href="#" class="ag-courses-item_link">
-        <div class="ag-courses-item_bg"></div>
-
-        <div class="ag-courses-item_title">
-          Annual package "Product+UX/UI+Graph designer&#160;2022"
-        </div>
-
-        <div class="ag-courses-item_date-box">
-          Start:
-          <span class="ag-courses-item_date">
-            04.11.2022
-          </span>
-        </div>
-      </a>
-    </div>
-
-    <div class="ag-courses_item">
-      <a href="#" class="ag-courses-item_link">
-        <div class="ag-courses-item_bg"></div>
-
-        <div class="ag-courses-item_title">
-          Graphic Design
-        </div>
-
-        <div class="ag-courses-item_date-box">
-          Start:
-          <span class="ag-courses-item_date">
-            04.11.2022
-          </span>
-        </div>
-      </a>
-    </div>
-
-    <div class="ag-courses_item">
-      <a href="#" class="ag-courses-item_link">
-        <div class="ag-courses-item_bg"></div>
-
-        <div class="ag-courses-item_title">
-          Motion Design
-        </div>
-
-        <div class="ag-courses-item_date-box">
-          Start:
-          <span class="ag-courses-item_date">
-            30.11.2022
-          </span>
-        </div>
-      </a>
-    </div>
-
-    <div class="ag-courses_item">
-      <a href="#" class="ag-courses-item_link">
-        <div class="ag-courses-item_bg"></div>
-
-        <div class="ag-courses-item_title">
-          Front-end development&#160;+ jQuery&#160;+ CMS
-        </div>
-      </a>
-    </div>
-
-    <div class="ag-courses_item">
-      <a href="#" class="ag-courses-item_link">
-        <div class="ag-courses-item_bg">
-        </div>
-        <div class="ag-courses-item_title">
-          Digital Marketing
-        </div>
-      </a>
-    </div>
-
-    <div class="ag-courses_item">
-      <a href="#" class="ag-courses-item_link">
-        <div class="ag-courses-item_bg"></div>
-
-        <div class="ag-courses-item_title">
-          Interior Design
-        </div>
-
-        <div class="ag-courses-item_date-box">
-          Start:
-          <span class="ag-courses-item_date">
-            31.10.2022
-          </span>
-        </div>
-      </a>
-    </div>
-
-  </div>
-</div>
 
 
 </body>
