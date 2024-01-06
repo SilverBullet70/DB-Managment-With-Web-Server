@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    form {
+      border: 3px solid #f1f1f1;
+    }
+
+    input[type=text],
+    input[type=password] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #00BFA6;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
+    .switchBtn {
+      width: auto;
+      padding: 10px 18px;
+      background-color: #F9A826;
+    }
+
+    .imgcontainer {
+      text-align: center;
+      margin: 24px 0 12px 0;
+    }
+
+    img.avatar {
+      width: 40%;
+      border-radius: 50%;
+    }
+
+    .container {
+      padding: 16px;
+      max-width: 40vw;
+      margin: auto;
+
+    }
+
+    span.psw {
+      float: right;
+      padding-top: 16px;
+    }
+
+    /* Change styles for span and cancel button on extra small screens */
+    @media screen and (max-width: 300px) {
+      span.psw {
+        display: block;
+        float: none;
+      }
+
+      .switchBtn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="registration">
+    <h2>Registration Form</h2>
+    <form action="checkUsernameAvailabilityService.php" method="post">
+      <div class="imgcontainer">
+        <img src="css/icons/signup_icon.svg" alt="signup_icon">
+      </div>
+
+      <div class="container">
+        <label for="uname"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="uname" required>
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="psw" required>
+
+        <button id="signupBtn" type="submit">Sign Up</button>
+        <label>
+          <input type="checkbox" checked="checked" name="remember"> Remember me
+        </label>
+      </div>
+
+      <div class="container" style="background-color:#f1f1f1">
+        <button type="button" class="switchBtn">Login Instead?</button>
+      </div>
+
+    </form>
+  </div>
+
+
+
+  <div id="login">
+    <h2>Login Form</h2>
+    <form action="php/loginService.php" method="post">
+      <div class="imgcontainer">
+        <img src="css/icons/login_icon.svg" alt="login icon">
+      </div>
+
+      <div class="container">
+        <label for="uname"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="uname" required>
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="psw" required>
+
+        <button id="loginBtn" type="submit">Login</button>
+        <label>
+          <input type="checkbox" checked="checked" name="remember"> Remember me
+        </label>
+      </div>
+
+      <div class="container" style="background-color:#f1f1f1">
+        <button type="button" class="switchBtn">Don't have an Account? Sign Up</button>
+        <span class="psw">Forgot <a href="#">password?</a></span>
+      </div>
+
+    </form>
+  </div>
+</body>
+
+
+<script>
+  $(document).ready(function () {
+    $("#registration").hide();
+    var registration = true
+    $(".switchBtn").click(function () {
+      if (registration) {
+        $("#registration").hide();
+        $("#login").show();
+        registration = false;
+      } else {
+        $("#registration").show();
+        $("#login").hide();
+        registration = true;
+      }
+
+    });
+
+    // $("#signupBtn").click(function () {
+    //   $.post("php/signupService.php", {
+    //     username: $("[name ='uname']").val(),
+    //     password: $("[name ='psw']").val(),
+
+    //   }, function (data, status) {
+    //     alert(data);
+    //   });
+    // });
+
+    // $("#loginBtn").click(function () {
+    //   $.post("php/loginService.php", {
+    //     username: $("[name ='uname']").val(),
+    //     password: $("[name ='psw']").val(),
+
+    //   }, function(data, status){
+    //     alert(data);
+    //   });
+    // });
+  });
+</script>
+
+</html>
