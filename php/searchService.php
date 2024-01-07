@@ -10,9 +10,6 @@ if (!isset($_SESSION["user"])) {
 }
 
 $tableName = $_POST["table"];
-echo $_POST["table"];
-
-echo "<h1>$tableName Table</h1>";
 
 $servername = "localhost:3306/";
 $username = "root";
@@ -52,7 +49,8 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
-        array_push($cols, $row["COLUMN_NAME"]);
+        $cols[$row["COLUMN_NAME"]] = $row["COLUMN_NAME"];
+       // array_push($cols, $row["COLUMN_NAME"]);
     }
 } else {
     echo "0 results";
@@ -60,35 +58,21 @@ if ($result->num_rows > 0) {
 
 
 $sql = "SELECT * FROM $tableName";
-echo $sql;
+
 $result = $conn->query($sql);
 
-
+$data = array();
 if ($result->num_rows > 0) {
-    echo "<table>";
 
-    echo "<tr>";
-    $i = 0;
-    while ($i < $numOfColumns) {
-        echo "<th>" . $cols[$i] . "</th>";
-        $i++;
-    }
-    echo "</tr>";
+    array_push($data, $cols);
+
     while ($row = $result->fetch_assoc()) {
-        echo "<tr>";
-        $i = 0;
-        while ($i < $numOfColumns) {
-            echo "<td>" . $row[$cols[$i]] . "</td>";
-            $i++;
-        }
-        echo "</tr>";
+
+        array_push($data, $row);
+        
     }
-    echo "</table>";
-} else {
-    echo "0 results";
 }
 
+echo json_encode($data);
+
 $conn->close();
-
-
-?>

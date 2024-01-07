@@ -4,7 +4,8 @@ if (!isset($_SESSION["user"])) {
 
     header("Location: registration.html");
 } else {
-    $table = $_GET["table"];}
+    $table = $_GET["table"];
+}
 ?>
 
 
@@ -26,28 +27,40 @@ if (!isset($_SESSION["user"])) {
     <div class="navbar">
         <ul id="tabList">
             <li><a class="active" href="index.php"><i class="fa fa-fw fa-home"></i> Home</a></li>
-            
+
         </ul>
     </div>
-    <!-- <h1></h1> -->
-
-    <!-- <label for="id">car name</label>
-    <input type="text" id="id">
-    <br>
-    <button id="search" type="button">Search</button> -->
 
 
     <!-- <embed type="text/html" src="registration.html" width="500" height="200"> -->
-    <div id="leftContainer">
-        <!-- <div id="res"></div> -->
-    </div>
+    <main>
+        <div id="leftContainer">
+            <h1></h1>
+            <div id="res"></div>
+        </div>
 
-    <div id="rightContainer"></div>
+        <div id="rightContainer">
+            <!-- 
+                <label for="id">car name</label>
+                <input type="text" id="id">
+                <br>
+            -->
+            <div class="container">
+                <div class="buttonContainer">
+                    <!-- <button id="search" type="button">Search</button> -->
+
+                </div>
+
+            </div>
+
+        </div>
+    </main>
 
     <script>
         $(document).ready(function() {
 
             var tableName = <?php echo json_encode($table, JSON_HEX_TAG); ?>;
+            $("h1").append(titleCase(tableName) + " Table");
             $.ajax({
                 url: "php/homeService.php",
                 type: "POST",
@@ -59,7 +72,6 @@ if (!isset($_SESSION["user"])) {
                             continue;
                         }
                         $("#tabList").append(buildTab(tbl, "table.php?table=" + tbl));
-                        $("#res").append("hee");
                     }
                 },
                 error: function(data) {
@@ -71,6 +83,8 @@ if (!isset($_SESSION["user"])) {
 
             $("#search").click(function() {
 
+
+
                 $.ajax({
                     url: "php/searchService.php",
                     type: "POST",
@@ -78,25 +92,46 @@ if (!isset($_SESSION["user"])) {
                         table: tableName,
                     },
                     success: function(data) {
-                        $("#res").html(data);
+                        var data = JSON.parse(data);
+                        const twoDArray = data.map(Object.values);
+
+                        var table = $("<table>");
+
+                        var row = $("<tr>");
+
+                        for (let j = 0; j < twoDArray[0].length; j++) {
+                            row.append("<th>" + twoDArray[0][j] + "</th>");
+                        }
+                        table.append(row);
+
+                        for (let i = 1; i < twoDArray.length; i++) {
+                            row = $("<tr>");
+
+                            for (let j = 0; j < twoDArray[i].length; j++) {
+                                row.append("<th>" + twoDArray[i][j] + "</th>");
+                            }
+                            table.append(row);
+                        }
+
+                        $("#res").append(table);
                     }
                 });
             });
 
-           
+
 
         });
 
         function buildTab(title, link) {
-                var tab =  "<li><a href='" + link + "'>" + title + "</a></li>";
-                return tab;
-            }
+            var tab = "<li><a href='" + link + "'>" + title + "</a></li>";
+            return tab;
+        }
 
         function titleCase(st) {
             return st.toLowerCase().split(" ").reduce((s, c) =>
                 s + "" + (c.charAt(0).toUpperCase() + c.slice(1) + " "), '');
         }
-    </script> 
+    </script>
 
 </body>
 
