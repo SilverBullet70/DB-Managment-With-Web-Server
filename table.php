@@ -21,6 +21,11 @@ if (!isset($_SESSION["user"])) {
     <link rel="stylesheet" href="css/tableStyle.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+
 
 </head>
 
@@ -75,11 +80,10 @@ if (!isset($_SESSION["user"])) {
         $(document).ready(function() {
 
             var tableName = <?php echo json_encode($table, JSON_HEX_TAG); ?>;
-
+            buildQueryForm(tableName);
             //foreignKeys("car");
             // $("#searchForm").append(getForeignKeys(tableName));
 
-            getFKOptions("address", "customer");
             //  $("#searchForm").append(getFKOptions("address", tableName));
             // $("#searchForm").append(getForeignKeys(tableName));
 
@@ -106,6 +110,7 @@ if (!isset($_SESSION["user"])) {
             $.ajax({
                 url: "php/homeService.php",
                 type: "POST",
+                async: false,
                 success: function(data) {
                     var tables = JSON.parse(data);
                     while (tables.length > 0) {
@@ -165,6 +170,7 @@ if (!isset($_SESSION["user"])) {
             $.ajax({
                 url: "php/searchService.php",
                 type: "POST",
+                async: false,
                 data: {
                     table: tableName,
                     column: column,
@@ -193,16 +199,20 @@ if (!isset($_SESSION["user"])) {
         //     });
         // }
 
-        function isFK(column, tableName) {
+        function isFK(column, tableName, callback) {
+
             foreignKeys(tableName, function(twoDArray) {
+                let found = false;
                 for (let i = 0; i < twoDArray.length; i++) {
-                    if (twoDArray[i][0].trim() == column.trim()) {
-                        return true;
+                    if (twoDArray[i][1].trim() === column.trim()) {
+                        found = true;
+                        break;
                     }
                 }
-                return false;
+                if (typeof callback === "function") {
+                    callback(found);
+                }
             });
-
 
         }
 
@@ -210,6 +220,7 @@ if (!isset($_SESSION["user"])) {
             $.ajax({
                 url: "php/getForeignKeysService.php",
                 type: "POST",
+                async: false,
                 data: {
                     table: tableName
                 },
@@ -240,8 +251,57 @@ if (!isset($_SESSION["user"])) {
             });
         }
 
-        function buildQueryForm() {
+        function getColumnsAndTypes(tableName, callback) {
+            $.ajax({
+                url: "php/getColumnsAndTypes.php",
+                type: "POST",
+                async: false,
+                data: {
+                    table: tableName
+                },
+                success: function(data) {
+                    var parsedData = JSON.parse(data);
+                    const twoDArray = parsedData.map(Object.values);
+                    if (typeof callback === "function") {
+                        callback(twoDArray);
+                    }
+                }
+            });
+        }
 
+        function buildQueryForm(tableName) {
+            getColumnsAndTypes(tableName, (cols) => {
+
+                var form = $("#searchForm");
+                for (let i = 0; i < cols.length; i++) {
+                    var col = cols[i][0];
+                    var type = cols[i][1];
+                    var length = cols[i][2];
+
+                    isFK(col, tableName, (found) => {
+                        if (found) {
+                            form.append($("<label>").text(titleCase(col)));
+
+                            var select = getDropdown(col, tableName);
+                            select.select2();
+                            form.append(select.select2());
+                        } else {
+                            form.append($("<label>").text(titleCase(col)));
+                            form.append($("<input>").attr("type", "text").attr("name", col).attr("placeholder", titleCase(col)));
+                        }
+                    });
+                }
+            });
+
+        }
+
+        function getDropdown(column, tableName) {
+            var select = $("<select>").attr("name", column);
+            var options = getFKOptions(column, tableName);
+            for (let i = 0; i < options.length; i++) {
+                select.append($("<option>").attr("value", options[i]).text(options[i]));
+            }
+            return select;
         }
 
 
