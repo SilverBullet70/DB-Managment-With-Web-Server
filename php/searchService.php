@@ -8,8 +8,12 @@ if (!isset($_SESSION["user"])) {
 
     header("Location: registration.html");
 }
-
+if (!isset($_POST["table"]) || !isset($_POST["column"]) || !isset($_POST["condition"])) {
+    die("Required parameters are not set.");
+}
 $tableName = $_POST["table"];
+$column = $_POST["column"];
+$condition = $_POST["condition"];
 
 $servername = "localhost:3306/";
 $username = "root";
@@ -57,14 +61,19 @@ if ($result->num_rows > 0) {
 }
 
 
-$sql = "SELECT * FROM $tableName";
+$sql = "SELECT ". $column ." FROM $tableName";
+if($condition != "null"){
+    $sql .= " WHERE " . $condition;
+}
 
 $result = $conn->query($sql);
 
 $data = array();
 if ($result->num_rows > 0) {
 
-    array_push($data, $cols);
+    if($column == "*"){
+        array_push($data, $cols);
+    }
 
     while ($row = $result->fetch_assoc()) {
 
