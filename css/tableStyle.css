@@ -62,7 +62,7 @@ body {
     background-color: #04AA6D;
 }
 
-#searchForm {
+.idFormContainer, .queryFormContainer {
     display: grid;
     grid-template-columns: auto auto;
     justify-content: space-around;
