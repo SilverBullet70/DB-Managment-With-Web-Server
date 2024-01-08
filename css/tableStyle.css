@@ -73,6 +73,7 @@ body {
     justify-content: space-between;
     align-items: center;
     align-content: center;
+    grid-column-gap: 30px;
 }
 
 /* .container {
@@ -167,7 +168,7 @@ main {
 
 label {
     font-family: 'Signika', sans-serif;
-    font-size: 14px;
+    font-size: 20px;
     color: #3468C0;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -185,6 +186,7 @@ select {
     border-radius: 4px;
     background-color: #fff;
     color: #3468C0;
+    font-size: 20px;
 }
 
 input:hover,
