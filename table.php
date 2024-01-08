@@ -20,12 +20,10 @@ if (!isset($_SESSION["user"])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/tableStyle.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
-
+ -->
 
 </head>
 
@@ -234,22 +232,42 @@ if (!isset($_SESSION["user"])) {
             });
         }
 
-        function getFKOptions(column, tableName) {
-            foreignKeys(tableName, function(twoDArray) {
-                for (let i = 0; i < twoDArray.length; i++) {
-                    if (twoDArray[i][1] == column) {
-                        var fkTable = twoDArray[i][2];
-                        var fkColumn = twoDArray[i][3];
-                        search((data) => {
-                            var data = JSON.parse(data);
-                            const arr = data.map(Object.values);
-                            return arr;
+        // function getFKOptions(column, tableName) {
+        //     foreignKeys(tableName, function(twoDArray) {
+        //         for (let i = 0; i < twoDArray.length; i++) {
+        //             if (twoDArray[i][1] == column) {
+        //                 var fkTable = twoDArray[i][2];
+        //                 var fkColumn = twoDArray[i][3];
+        //                 search((data) => {
+        //                     var data = JSON.parse(data);
+        //                     const arr = data.map(Object.values);
+        //                     return arr;
 
-                        }, fkTable, fkColumn, "null");
+        //                 }, fkTable, fkColumn, "null");
+        //             }
+        //         }
+        //     });
+        // }
+
+
+        function getFKOptions(column, tableName) {
+            return new Promise((resolve, reject) => {
+                foreignKeys(tableName, function(twoDArray) {
+                    for (let i = 0; i < twoDArray.length; i++) {
+                        if (twoDArray[i][1] == column) {
+                            var fkTable = twoDArray[i][2];
+                            var fkColumn = twoDArray[i][3];
+                            search((data) => {
+                                var data = JSON.parse(data);
+                                const arr = data.map(Object.values);
+                                resolve(arr); // Resolve the promise with the data
+                            }, fkTable, fkColumn, "null");
+                        }
                     }
-                }
+                });
             });
         }
+
 
         function getColumnsAndTypes(tableName, callback) {
             $.ajax({
@@ -269,22 +287,46 @@ if (!isset($_SESSION["user"])) {
             });
         }
 
-        function buildQueryForm(tableName) {
-            getColumnsAndTypes(tableName, (cols) => {
+        // async function buildQueryForm(tableName) {
+        //     getColumnsAndTypes(tableName, (cols) => {
 
+        //         var form = $("#searchForm");
+        //         for (let i = 0; i < cols.length; i++) {
+        //             var col = cols[i][0];
+        //             var type = cols[i][1];
+        //             var length = cols[i][2];
+
+        //             isFK(col, tableName, (found) => {
+        //                 if (found) {
+        //                     form.append($("<label>").text(titleCase(col)));
+
+        //                     var select = getDropdown(col, tableName);
+        //                     $("#res").append(select);
+        //                     form.append(select);
+        //                 } else {
+        //                     form.append($("<label>").text(titleCase(col)));
+        //                     form.append($("<input>").attr("type", "text").attr("name", col).attr("placeholder", titleCase(col)));
+        //                 }
+        //             });
+        //         }
+        //     });
+
+        // }
+
+
+        async function buildQueryForm(tableName) {
+            getColumnsAndTypes(tableName, async (cols) => {
                 var form = $("#searchForm");
                 for (let i = 0; i < cols.length; i++) {
-                    var col = cols[i][0];
-                    var type = cols[i][1];
-                    var length = cols[i][2];
+                    var col = await cols[i][0];
+                    var type = await cols[i][1];
+                    var length = await cols[i][2];
 
-                    isFK(col, tableName, (found) => {
+                    await isFK(col, tableName, async (found) => {
                         if (found) {
+                            var select = await getDropdown(col, tableName);
                             form.append($("<label>").text(titleCase(col)));
-
-                            var select = getDropdown(col, tableName);
-                            select.select2();
-                            form.append(select.select2());
+                            form.append(select);
                         } else {
                             form.append($("<label>").text(titleCase(col)));
                             form.append($("<input>").attr("type", "text").attr("name", col).attr("placeholder", titleCase(col)));
@@ -292,17 +334,41 @@ if (!isset($_SESSION["user"])) {
                     });
                 }
             });
-
         }
 
-        function getDropdown(column, tableName) {
+
+
+        // async function getDropdown(column, tableName) {
+        //     var select = $("<select>").attr("name", column);
+        //     select.addClass("autoFill");
+        //     var options = await getFKOptions(column, tableName);
+
+        //     $("#res").append(JSON.stringify(options));
+
+        //     $("#res").append("  " + options.length);
+        //     for (let i = 0; i < options.length; i++) {
+        //         $("#res").append("  " + i);
+
+        //         select.append($("<option>").attr("value", options[i]).text(options[i]));
+        //     }
+        //     return select;
+        // }
+
+        async function getDropdown(column, tableName) {
             var select = $("<select>").attr("name", column);
-            var options = getFKOptions(column, tableName);
-            for (let i = 0; i < options.length; i++) {
-                select.append($("<option>").attr("value", options[i]).text(options[i]));
+            select.addClass("autoFill");
+            try {
+                var options = await getFKOptions(column, tableName);
+                for (let i = 0; i < options.length; i++) {
+                    select.append($("<option>").attr("value", options[i]).text(options[i]));
+                }
+            } catch (error) {
+                console.error("Error getting dropdown options:", error);
             }
+
             return select;
         }
+
 
 
         function buildTab(title, link) {

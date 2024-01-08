@@ -62,7 +62,7 @@ body {
     background-color: #04AA6D;
 }
 
-form{
+#searchForm {
     display: grid;
     grid-template-columns: auto auto;
     justify-content: space-around;
