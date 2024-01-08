@@ -66,6 +66,7 @@ if($condition != "null"){
     $sql .= " WHERE " . $condition;
 }
 
+
 $result = $conn->query($sql);
 
 $data = array();

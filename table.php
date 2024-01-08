@@ -64,7 +64,7 @@ if (!isset($_SESSION["user"])) {
 
                 <div class="container">
                     <div class="buttonContainer">
-                        <button id="search" type="button">Search</button>
+                        <button id="search" type="submit">Search</button>
 
                     </div>
 
@@ -126,9 +126,49 @@ if (!isset($_SESSION["user"])) {
 
             $("h1").html(titleCase(tableName) + " Table");
 
+            search((data) => {
+                var data = JSON.parse(data);
+                const twoDArray = data.map(Object.values);
 
-            $("#search").click(function() {
+                var table = $("<table>");
 
+                var row = $("<tr>");
+
+                for (let j = 0; j < twoDArray[0].length; j++) {
+                    row.append("<th>" + twoDArray[0][j] + "</th>");
+                }
+                table.append(row);
+
+                for (let i = 1; i < twoDArray.length; i++) {
+                    row = $("<tr>");
+
+                    for (let j = 0; j < twoDArray[i].length; j++) {
+                        row.append("<th>" + twoDArray[i][j] + "</th>");
+                    }
+                    table.append(row);
+                }
+
+                $("#res").append(table);
+            }, tableName, "*", "null");
+
+
+            $("form").submit(function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                const formData = new FormData(this); // 'this' refers to the form
+
+                var whereClause = "";
+                for (var pair of formData.entries()) {
+                    if (pair[1] != "" && pair[1] != null && pair[1] != undefined)
+                        whereClause += pair[0] + '= "' + pair[1] + '" AND ';
+                }
+                if (whereClause != "") {
+                    let regex = /AND $/;
+                    whereClause = whereClause.replace(regex, ";");
+                } else
+                    whereClause = "null";
+
+                $("#res").html(whereClause);
                 search((data) => {
                     var data = JSON.parse(data);
                     const twoDArray = data.map(Object.values);
@@ -151,14 +191,12 @@ if (!isset($_SESSION["user"])) {
                         table.append(row);
                     }
 
-                    $("#res").append(table);
-                }, tableName, "*", "null");
-
-
-
-
-
+                    $("#res").html(table);
+                }, tableName, "*", whereClause);
             });
+
+
+
 
 
 
