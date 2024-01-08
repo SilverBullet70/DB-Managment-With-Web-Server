@@ -2,8 +2,8 @@ body,html{
     margin: 0;
 }
 .ag-format-container {
-    width: 50vw;
-    margin: 0 auto;
+    margin-top: 100px;
+
 }
 
 
@@ -15,20 +15,67 @@ a{
     text-decoration: none;
 }
 
+h1{
+    font-size: 150px;
+    font-weight: 700;
+    color: #000;
+    text-align: center;
+    vertical-align: middle;
+    margin: auto;
+
+
+}
+
+#rightContainer {
+    width: 50vw;
+    height: 100vh;
+    align-items: center;
+}
+
+.container {
+    margin-top: 0;
+    height: 50px;
+    display: flex; /* Use flexbox */
+    align-items: center; /* Align items vertically in the center */
+    justify-content: flex-end; /* Align items to the end (right) of the container */
+    /* Other styles remain unchanged */
+}
+
+.buttonContainer {
+    /* Remove the absolute positioning and related styles */
+    margin: 0;
+    margin-right: 50px;
+
+}
+
+
+button {
+    background-color: #3468C0;
+    /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    -webkit-transition-duration: 0.4s;
+    /* Safari */
+    transition-duration: 0.4s;
+    border-radius: 10px;
+}
+
+button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
 .title{
+    display: flex;
     width: 50vw;
     vertical-align: middle;
-    h1{
-        font-size: 150px;
-        font-weight: 700;
-        color: #000;
-        text-align: center;
-        
-
-    
-    }
-
-    background-color: #3ecd5e;
+    background-color: #86A7FC;
 }
 .ag-courses_box {
     display: -webkit-box;

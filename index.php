@@ -48,10 +48,10 @@ if (!isset($_SESSION["user"])) {
     </script>
 
     <div class="title">
-        <h1>Database tables whith PHP</h1>
+        <h1>Database tables with PHP</h1>
 
     </div>
-
+<div id="rightContainer">
     <div class="ag-format-container">
         <div id="res" class="ag-courses_box">
 
@@ -75,6 +75,27 @@ if (!isset($_SESSION["user"])) {
         </div>
     </div>
 
+    <div class="container">
+        <div class="buttonContainer">
+            <button id="logout" type="button">Logout</button>
+
+        </div>
+
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#logout").click(function() {
+                $.ajax({
+                    url: "php/logoutService.php",
+                    type: "POST",
+                    success: function(data) {
+                    }
+                });
+            });
+        });
+     </script>
+</div>
 
 </body>
 

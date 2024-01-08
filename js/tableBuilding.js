@@ -67,7 +67,7 @@ $(document).ready(function () {
             row = $("<tr>");
 
             for (let j = 0; j < twoDArray[i].length; j++) {
-                row.append("<th>" + twoDArray[i][j] + "</th>");
+                row.append("<td>" + twoDArray[i][j] + "</td>");
             }
             table.append(row);
         }
@@ -110,7 +110,7 @@ $(document).ready(function () {
                 row = $("<tr>");
 
                 for (let j = 0; j < twoDArray[i].length; j++) {
-                    row.append("<th>" + twoDArray[i][j] + "</th>");
+                    row.append("<td>" + twoDArray[i][j] + "</td>");
                 }
                 table.append(row);
             }
@@ -229,7 +229,7 @@ function insert(tableName, values) {
                     row = $("<tr>");
 
                     for (let j = 0; j < twoDArray[i].length; j++) {
-                        row.append("<th>" + twoDArray[i][j] + "</th>");
+                        row.append("<td>" + twoDArray[i][j] + "</td>");
                     }
                     table.append(row);
                 }
@@ -269,7 +269,7 @@ function update(tableName, values, condition) {
                     row = $("<tr>");
 
                     for (let j = 0; j < twoDArray[i].length; j++) {
-                        row.append("<th>" + twoDArray[i][j] + "</th>");
+                        row.append("<td>" + twoDArray[i][j] + "</td>");
                     }
                     table.append(row);
                 }
